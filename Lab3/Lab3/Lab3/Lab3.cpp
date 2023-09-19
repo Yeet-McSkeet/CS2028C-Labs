@@ -11,7 +11,7 @@ std::ostream& operator << (std::ostream& out, complex& number) {    // Show the 
     else { out << number.real_ << " - " << abs(number.complex_) << "i " << std::endl; }
     return out;
 }
-
+//hi
 complex createComplex() {       // So that the creation code doesnt copy/paste
 
     double x, y;
