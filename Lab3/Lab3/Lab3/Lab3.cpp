@@ -32,7 +32,7 @@ int main()
         double scalar = 0;
         int a = 0;
         bool equal = false;
-
+        complex complex1, complex2, complex3;
 
         std::cout << "Select an operation: \n1: Addition \n2: Subtraction \n3: Scalar Multiplication \n4: Scalar Division \n5. Equality \n0: Exit Program" << std::endl;
         std::cout << "Enter the number of the operation: ";
@@ -49,12 +49,12 @@ int main()
         case 1:
             system("CLS");
             std::cout << "Create the first complex number" << std::endl;
-            complex complex1 = createComplex();
+            complex1 = createComplex();
 
             std::cout << "Create the second complex number" << std::endl;
-            complex complex2 = createComplex();
+            complex2 = createComplex();
 
-            complex complex3 = complex1 + complex2;
+            complex3 = complex1 + complex2;
 
             system("CLS");
             std::cout << "Result is: " << complex3 << std::endl;
@@ -62,12 +62,12 @@ int main()
         case 2:
             system("CLS");
             std::cout << "Create the first complex number" << std::endl;
-            complex complex1 = createComplex();
+            complex1 = createComplex();
 
             std::cout << "Create the second complex number" << std::endl;
-            complex complex2 = createComplex();
+            complex2 = createComplex();
 
-            complex complex3 = complex1 - complex2;
+            complex3 = complex1 - complex2;
 
             system("CLS");
             std::cout << "Result is: " << complex3 << std::endl;
@@ -75,12 +75,12 @@ int main()
         case 3:
             system("CLS");
             std::cout << "Create the first complex number" << std::endl;
-            complex complex1 = createComplex();
+            complex1 = createComplex();
 
             std::cout << "enter your scalar quantity: ";
             std::cin >> scalar;
 
-            complex complex3 = complex1 * scalar;
+            complex3 = complex1 * scalar;
 
             system("CLS");
             std::cout << "Result is: " << complex3 << std::endl;
@@ -88,12 +88,12 @@ int main()
         case 4:
             system("CLS");
             std::cout << "Create the first complex number" << std::endl;
-            complex complex1 = createComplex();
+            complex1 = createComplex();
 
             std::cout << "enter your scalar quantity: ";
             std::cin >> scalar;
 
-            complex complex3 = complex1 / scalar;
+            complex3 = complex1 / scalar;
 
             system("CLS");
             std::cout << "Result is: " << complex3 << std::endl;
@@ -101,10 +101,10 @@ int main()
         case 5:
             system("CLS");
             std::cout << "Create the first complex number" << std::endl;
-            complex complex1 = createComplex();
+            complex1 = createComplex();
 
             std::cout << "Create the second complex number" << std::endl;
-            complex complex2 = createComplex();
+            complex2 = createComplex();
             equal = complex1 == complex2;
             std::cout << "Numbers are equal: " << equal << std::endl;
             continue;
