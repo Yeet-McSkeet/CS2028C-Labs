@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+*.wsuo
+*.vsidx
+/Lab3/Lab3/.vs/Lab3/FileContentIndex/read.lock
+*.db
+*.db-shm
+*.db-wal
+*.opendb
+*.ipch
