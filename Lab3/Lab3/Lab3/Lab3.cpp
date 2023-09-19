@@ -43,6 +43,7 @@ int main()
         default:
             system("CLS");
             std::cout << "No valid option selected. \nPlease enter the number to the left of your desired operation." << std::endl;
+            continue;
         case 0:
             return 0;
         case 1:
