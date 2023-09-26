@@ -12,15 +12,18 @@ Show::Show(std::string title, std::string description)
 	description_ = description;
 }
 
-void Show::playShow_()
+void Show::play_()
 {
-	std::cout << "Playing show... \nNo content to play." << std::endl;
+	std::cout << "Playing show..." << std::endl;
+	this->details_();
+	std::cout << "Called from show" << std::endl;
 }
 
-void Show::showDetails_()
+void Show::details_()
 {
 	std::cout << title_ << std::endl;
 	std::cout << description_ << std::endl;
+	std::cout << "Called from show" << std::endl;
 }
 
 

@@ -8,15 +8,14 @@ class TV : public Show
 {
 private:
 
-	std::vector<std::vector<Show>> seasonsEpisodes_;
+	std::vector<std::vector<Show*>> seasonsEpisodes_;
 
 public:
 	TV();
-	TV(std::string, std::string);
+	TV(std::string, std::string, std::vector<std::vector<Show*>>);
 
-	void playShow_();
-	void showDetails_();
-
+	void play_();
+	void details_();
 };
 
 #endif // !TV_H

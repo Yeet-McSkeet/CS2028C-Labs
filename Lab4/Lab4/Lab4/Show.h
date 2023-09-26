@@ -15,8 +15,8 @@ public:
 	Show();
 	Show(std::string, std::string);
 
-	virtual void playShow_();		// Available if overwritten
-	void showDetails_();			// Available
+	virtual void play_();		// Available if overwritten
+	void details_();			// Available
 
 	// getters (DEBUG ONLY)
 	std::string getTitle_();		// Available

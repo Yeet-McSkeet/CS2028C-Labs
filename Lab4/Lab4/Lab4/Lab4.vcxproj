@@ -128,10 +128,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Lab4.cpp" />
+    <ClCompile Include="Movie.cpp" />
     <ClCompile Include="Show.cpp" />
     <ClCompile Include="TV.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Movie.h" />
     <ClInclude Include="Show.h" />
     <ClInclude Include="TV.h" />
   </ItemGroup>
