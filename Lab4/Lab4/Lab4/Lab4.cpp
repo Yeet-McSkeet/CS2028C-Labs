@@ -12,28 +12,28 @@ int main()
         std::cin >> sel;
         system("CLS");
         if (sel == 1) {
-            Show instance;
-            instance.details_();
-            instance.play_();
+            Show* instance = new Show();
+            std::cout << std::endl;
+            instance->play_();
         }
         else if (sel == 2) {
-            TV instance;
-            instance.details_();
-            instance.play_();
+            TV* instance = new TV();
+            std::cout << std::endl;
+            instance->play_();
         }
         else if (sel == 3) {
-            Movie instance;
-            instance.details_();
-            instance.play_();
+            Movie* instance = new Movie();
+            std::cout << std::endl;
+            instance->play_();
         }
         else if (sel == 4) {
             Show* instance = new TV();
-            instance->details_();
+            std::cout << std::endl;
             instance->play_();
         }
         else if (sel == 5) {
             Show* instance = new Movie();
-            instance->details_();
+            std::cout << std::endl;
             instance->play_();
         }
         else { return 0; }

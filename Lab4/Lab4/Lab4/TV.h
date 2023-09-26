@@ -14,7 +14,7 @@ public:
 	TV();
 	TV(std::string, std::string, std::vector<std::vector<Show*>>);
 
-	void play_();
+	void play_() override;
 	void details_();
 };
 

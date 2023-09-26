@@ -2,8 +2,8 @@
 
 Show::Show()
 {
-	title_ = "_default_";
-	description_ = "_default_";
+	title_ = "default_title";
+	description_ = "default_description";
 }
 
 Show::Show(std::string title, std::string description)
@@ -16,14 +16,14 @@ void Show::play_()
 {
 	std::cout << "Playing show..." << std::endl;
 	this->details_();
-	std::cout << "Called from show" << std::endl;
 }
 
 void Show::details_()
 {
+	std::cout << "Show Details: " << std::endl;
 	std::cout << title_ << std::endl;
 	std::cout << description_ << std::endl;
-	std::cout << "Called from show" << std::endl;
+	std::cout << std::endl;
 }
 
 

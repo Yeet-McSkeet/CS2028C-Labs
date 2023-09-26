@@ -6,8 +6,7 @@
 
 #include "Show.h"
 #include<vector>
-class Movie :
-    public Show
+class Movie : public Show
 {
 
 private:
@@ -19,10 +18,10 @@ public:
     Movie();
     Movie(std::string title, std::string description, std::vector<std::string> opening_credits);
 
-    void play_();
+    void play_() override;
 
-    void setCredits(std::vector<std::string>);
-    std::vector<std::string> getCredits();
+    void setCredits_(std::vector<std::string>);
+    std::vector<std::string> getCredits_();
 
 };
 
