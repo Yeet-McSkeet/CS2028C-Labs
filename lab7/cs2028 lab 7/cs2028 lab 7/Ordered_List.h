@@ -18,32 +18,29 @@ public:
 
 	Ordered_List()// Default (only) constructor
 	{
-		int a = 0;	// random zero value to not compare int to nullptr
 		// Initialize whole array to nullptr to avoid fucky memory
 		for (auto& i : list_)
 		{
-			i = &a;
+			i = new int;
+			i = nullptr;
 		}
 		
-		list_[0] = &a;	// Set next item in list to zero to not compare int to ptr
 		length_ = 0;
 	}		
-
-	~Ordered_List()		// Destructor will call makeEmpty(), just to ensure the list is cleared
-	{
-		makeEmpty();
-	}
 
 	void addItem(T* item)	// Adds an item via a pointer
 	{ 
 		int index = 0;
-		while (*item > *list_[index] && index < length_) {
+		while (list_[index]) {
+			if (*item < *list_[index] || index > length_) 
+			{ break; }
 			++index;
 		}	// break when item >= list_[index] or when index hits length
 		
 		for (int i = length_; i >= index + 1; i--) {
 			list_[i] = list_[i - 1];
 		}
+
 		list_[index] = item;
 		++length_;
 	}	
@@ -54,14 +51,12 @@ public:
 	bool isEmpty();			// Check first item in list for empty or zero
 	bool isFull();			// Check last item in list for empty or zero
 
-	void makeEmpty()
-	{
-		int a = 0;
-		for (auto& i : list_)
-		{
+	void makeEmpty() {
+		for (auto& i : list_) {
 			delete i;
-			i = &a;
+			i = nullptr;
 		}
+		length_ = 0;
 	}
 	
 	class arrayFull_;
