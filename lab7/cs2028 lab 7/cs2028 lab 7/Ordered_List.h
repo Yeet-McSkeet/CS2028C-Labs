@@ -16,16 +16,14 @@ private:
 
 public:
 
-	Ordered_List()// Default (only) constructor
+	Ordered_List()
 	{
-		// Initialize whole array to nullptr to avoid fucky memory
+		length_ = 0;
+		//	Set all dangling pointers in array to nullptr
 		for (auto& i : list_)
 		{
-			i = new int;
 			i = nullptr;
 		}
-		
-		length_ = 0;
 	}		
 
 	void addItem(T* item)	// Adds an item via a pointer
@@ -39,12 +37,14 @@ public:
 		
 		for (int i = length_; i >= index + 1; i--) {
 			list_[i] = list_[i - 1];
+			//	Move bitch, get out the way
 		}
 
 		list_[index] = item;
 		++length_;
 	}	
 
+	int length() { return length_; }
 
 	void removeItem();		// remove an item from the list (how?)
 
