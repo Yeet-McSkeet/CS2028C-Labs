@@ -1,4 +1,5 @@
 #include<iostream>
+#include<iomanip>
 #include<random>
 #include"Ordered_List.h"
 
@@ -15,14 +16,15 @@ T randomGenerator(T range_from, T range_to)
 int main() {
 
 	Ordered_List<int> list;
+	Ordered_List<int> list2;
 
 	for (int i = 0; i < 25; ++i)
 	{
-		int* item = new int;
-		*item = randomGenerator(0, 50);	// Item can now be added to all lists simultaneously
+		std::shared_ptr<int> item = std::make_shared<int>( randomGenerator<int>(0,50) );
 
 		
 		list.addItem(item);
+		list2.addItem(item);
 	}
 
 
@@ -30,6 +32,7 @@ int main() {
 
 	list.makeEmpty();
 
+	asdfghjkl = 0;
 
 	return 0;
 }
