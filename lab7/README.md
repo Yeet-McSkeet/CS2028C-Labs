@@ -2,8 +2,6 @@
 
 *Lab due: **Monday, Oct 16 at 11:55PM for Tuesday Section*** 
 
-`    `***Tuesday, Oct 17 at 11:55PM for Wednesday Section***               ***Wednesday, Oct 18 at 11:55PM for Thursday Section*** 
-
 **Objective:** 
 
 The objective of this Lab is to manipulate an ordered list and explore possible efficiency options in creating the list. 
