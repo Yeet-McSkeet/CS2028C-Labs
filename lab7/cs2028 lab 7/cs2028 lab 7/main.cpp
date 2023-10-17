@@ -16,16 +16,17 @@ T randomGenerator(T range_from, T range_to)
 int main() {
 
 	Ordered_List<int> list;
-	Ordered_List<int> list2;
 
-	for (int i = 0; i < 25; ++i)
+	for (int i = 0; i < list.size(); ++i)
 	{
 		std::shared_ptr<int> item = std::make_shared<int>( randomGenerator<int>(0,50) );
-
 		
 		list.addItem(item);
-		list2.addItem(item);
+
 	}
+
+	int randomindex = randomGenerator<int>(0, list.length() - 1);
+	list.removeItem(randomindex);
 
 
 	int asdfghjkl = 0;

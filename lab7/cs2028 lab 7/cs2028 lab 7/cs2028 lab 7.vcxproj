@@ -128,10 +128,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Ordered_List.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ordered_List.h" />
+    <ClInclude Include="Ordered_List_Middle.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

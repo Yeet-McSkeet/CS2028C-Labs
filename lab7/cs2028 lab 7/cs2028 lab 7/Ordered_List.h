@@ -42,19 +42,31 @@ public:
 		list_[index] = item;
 		++length_;
 	}	
-	void removeItem();		// remove an item from the list (how?)
+	void removeItem(int randomindex)		
+	{	// remove an item from the list (how?)
+		list_[randomindex].reset();
+		list_[randomindex] = nullptr;
+		for (int i = randomindex+1; i < length_; ++i)
+		{
+			list_[i - 1] = list_[i];
+		}	//	Move bitch, get back in the way
+		list_[list_.size() - 1].reset();	// Remove the reference
+		list_[list_.size() - 1] = nullptr;		// Set dangling pointer
+		--length_;
+	}
 
 	void makeEmpty() 
 	{	// Make the whole list empty. Reset the shared pointer to new T, set dangling pointer to null.
 		for (auto& i : list_)
 		{
-			i.reset(new T);
+			i.reset();
 			i = nullptr;
 		}
 		length_ = 0;
 	}
 
 	int length()	{ return length_; }						// Return the length as an integer
+	int size()		{ return list_.size(); }				// Return the size of the array
 	bool isEmpty()	{ return length_ == 0; }				// Check first item in list for empty or zero
 	bool isFull()	{ return length_ == list_.size(); };	// Check last item in list for empty or zero
 
