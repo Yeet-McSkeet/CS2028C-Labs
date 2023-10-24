@@ -6,7 +6,7 @@
 template<typename T>
 class Ordered_List
 {
-private:
+protected:
 
 	std::array<std::shared_ptr<T>, 25> list_;
 	int length_;

@@ -2,6 +2,7 @@
 #include<iomanip>
 #include<random>
 #include"Ordered_List.h"
+#include"Ordered_List_Middle.h"
 
 template<typename T>
 T randomGenerator(T range_from, T range_to)
@@ -15,7 +16,7 @@ T randomGenerator(T range_from, T range_to)
 
 int main() {
 
-	Ordered_List<int> list;
+	Ordered_List_Middle<int> list;
 
 	for (int i = 0; i < list.size(); ++i)
 	{
