@@ -17,6 +17,7 @@ class List
 private:
 
 	Node<T>*	head_;
+	Node<T>*	tail_;
 	Node<T>*	location_;
 	int			length_;
 	
@@ -29,20 +30,27 @@ public:
 		location_ = head_;
 		length_ = 0;
 	}
-	~list()
-	{
+	
 
-
-
-	}
-
-	bool isEmpty() { return head != nullptr; }
+	bool isEmpty() { return head_ != nullptr; }
 	int length() { return length_; }
 	void reset() { location_ = head_; }	
 
-	void removeItem()
-	{	// Removes the item at location
-
+	Node<T>* removeItem(Node<T>* item)
+	{	// Removes the item at location, does not clear its memory
+		if (head_ == item)
+		{
+			head_ = item->next_;
+		}
+		if (item->next_)
+		{
+			item->next_->prev_ = item->prev_;
+		}
+		else
+		{
+			item->prev_ = nullptr;
+		}
+		return item;
 	}
 
 	void addItem(T* item)
@@ -51,7 +59,7 @@ public:
 		//Node<T>* newnode = new Node<T>{ item, nullptr, nullptr };	// Make new node with data
 		if (!head_)
 		{	// Set head if not set
-			head_ = newnode;
+			head_ = new Node<T>{ item, nullptr, nullptr };
 			return;
 		}
 
@@ -101,14 +109,14 @@ public:
 		return false;
 	}
 
-	T* getItem(T* item)
+	Node<T>* getItem(T* item)
 	{
 		reset();
 		while (!location_)
 		{
 			if (*item->data_ == *location_->data_)
 			{
-				return location_->data_;
+				return removeItem(location_);
 			}
 			location_ = location_->next_;
 		}
@@ -117,15 +125,15 @@ public:
 
 	T* seeAt(int index)
 	{	// Go to the index if it exists
-		if (index > size_) { return nullptr; }
+		if (index > length_) { return nullptr; }
 		location_ = head_;
-		for (auto& i = 0 : index)
+		for (auto& i = 0; i < index; ++i)
 		{
 			location_ = location_->next_;
 		}
 		return location_;
 	}
-	T* seeNeext()
+	T* seeNext()
 	{	// Get the next item if it exists
 		if (location_->next_)
 		{
@@ -133,7 +141,7 @@ public:
 		}
 		return nullptr;
 	}
-	T* seePrec()
+	T* seePrev()
 	{
 		if (location_->prev_)
 		{
@@ -142,6 +150,30 @@ public:
 		return nullptr;
 	}
 	
+	bool operator < (List<T>* comp) 
+	{
+		return this->length_ < comp->length_;
+	}
+	bool operator > (List<T>& comp)
+	{
+		return this->length_ > comp->length_;
+	}
+	bool operator == (List<T>& comp)
+	{
+		return this->length_ == comp->length_;
+	}
+
+	~List ()
+	{
+		reset();
+		while (location_->next_)
+		{	// Set the next item to a temporary node, delete location, point location to temp and point temp to null.
+			Node<T>* temp = location_->next_;
+			delete location_;
+			location_ = temp;
+			temp = nullptr;
+		}
+	}
 };
 
 #endif // !_linked_list_template_h

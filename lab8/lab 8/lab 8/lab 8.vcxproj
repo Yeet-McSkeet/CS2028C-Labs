@@ -129,9 +129,12 @@
   <ItemGroup>
     <ClCompile Include="linked_list_template.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Product.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="linked_list_template.h" />
+    <ClInclude Include="Product.h" />
+    <ClInclude Include="randomgenerator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
