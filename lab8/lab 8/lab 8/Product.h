@@ -4,22 +4,20 @@
 #include<string>
 #include"randomgenerator.h"
 
-enum UnitOfMeasure { each = 1, foot, inch, meter, centimeter, pound, ounce, kilogram, gram };
-
 class Product
 {
 
 private:
-	UnitOfMeasure uom_;
+	int sku_;
 	std::string	description_;
 	float price_;
-	int sku_;
+	int uom_;
 	int quantity_;
 	int leadtime_;
 
 public:
 
-	Product(UnitOfMeasure uom, std::string desc, float price, int sku, int quantity = 0)
+	Product(int uom, std::string desc, float price, int sku, int quantity = 0)
 	{
 		uom_ = uom;
 		description_ = desc;

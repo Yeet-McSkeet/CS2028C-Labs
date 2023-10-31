@@ -17,7 +17,6 @@ class List
 private:
 
 	Node<T>*	head_;
-	Node<T>*	tail_;
 	Node<T>*	location_;
 	int			length_;
 	
@@ -46,9 +45,9 @@ public:
 		{
 			item->next_->prev_ = item->prev_;
 		}
-		else
+		if (item->prev_)
 		{
-			item->prev_ = nullptr;
+			item->prev_->next_ = item->next_;
 		}
 		return item;
 	}
@@ -65,7 +64,7 @@ public:
 
 		while (location_) 
 		{	// Add item to list
-			if (*item <= *location_->data_)
+			if (*item < *location_->data_)
 			{	// If new data is less than current location data, add item before current location (push list back)
 				Node<T>* newnode = new Node<T>{ item, location_, location_->prev_ };	// Make new node with data
 
@@ -82,10 +81,9 @@ public:
 				}
 				return;
 			}
-
 			else if (!location_->next_)
-			{	// If end of list, add item to end
-				Node<T>* newnode = new Node<T>{ item, nullptr, location_->prev_ };	// Make new node with data
+			{
+				Node<T>* newnode = new Node<T>{ item, nullptr, location_ };	// Make new node with data
 				location_->next_ = newnode;
 				return;
 			}
@@ -93,12 +91,14 @@ public:
 			// Next item if none are true
 			location_ = location_->next_;
 		}
+		return;
+		
 	}
 
-	bool isInList(T* item)
+	bool isInList(Node<T>* item)
 	{
 		reset();
-		while (!location_)
+		while (location_)
 		{
 			if (*item->data_ == *location_->data_)
 			{
@@ -109,10 +109,10 @@ public:
 		return false;
 	}
 
-	Node<T>* getItem(T* item)
+	Node<T>* getItem(Node<T>* item)
 	{
 		reset();
-		while (!location_)
+		while (location_)
 		{
 			if (*item->data_ == *location_->data_)
 			{
@@ -123,17 +123,21 @@ public:
 		return nullptr;
 	}
 
-	T* seeAt(int index)
+	Node<T>* seeAt(int index)
 	{	// Go to the index if it exists
 		if (index > length_) { return nullptr; }
 		location_ = head_;
-		for (auto& i = 0; i < index; ++i)
+		for (auto i = 0; i < index; ++i)
 		{
+			if (!location_->next_)
+			{
+				return nullptr;
+			}
 			location_ = location_->next_;
 		}
 		return location_;
 	}
-	T* seeNext()
+	Node<T>* seeNext()
 	{	// Get the next item if it exists
 		if (location_->next_)
 		{
@@ -141,7 +145,7 @@ public:
 		}
 		return nullptr;
 	}
-	T* seePrev()
+	Node<T>* seePrev()
 	{
 		if (location_->prev_)
 		{
