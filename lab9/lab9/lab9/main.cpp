@@ -2,6 +2,7 @@
 #include<fstream>
 #include<iomanip>
 #include<string>
+#include<sstream>
 #include"Word.h"
 #include"BinaryTree.h"
 
@@ -9,12 +10,12 @@
 
 int main()
 {
-	BinaryTree<std::string> wordfrequency;
+	BinaryTree<std::string> wordtree;
 
 	std::string filename;
 	std::cout << "Enter a filename and extension to analyze: ";
 	//getline(std::cin, filename);
-	filename = "a.txt";
+	filename = "MobyDick.txt";
 
 	std::ifstream book;
 	book.open(filename, std::ios::in);
@@ -28,40 +29,50 @@ int main()
 
 	std::string line;
 
-	/********************	Use later
-	while (!book.eof())	|
-	{ }					|
-	********************/
-
-	getline(book, line);
-	line.append(" ");	// So that it finds a word
-	for (auto& i : line)
-	{	// Fix the string to be all lowercase words, all punctuation removed. 
-		if (isupper(i))
-		{
-			i += 32;
-		}
-		else if (!islower(i) && i != ' ')
-		{
-			line.erase(line.find(i), 1);
-		}
-	}
-
-	//Rebalance tree each line, adding will be more efficient in theory
-	for (int i = 1; i < line.length(); ++i)
+	
+	while (!book.eof())
 	{
+		getline(book, line);
+		line.append(" ");	// So that it finds a word
+		for (auto& i : line)
+		{	// Fix the string to be all lowercase words, all punctuation removed. 
+			if (i == '\0')
+			{	// Break if it reaches the newline character
+				break;
+			}
+			if (isupper(i))
+			{
+				i += 32;
+			}
+			else if (!islower(i) && i != ' ')
+			{
+				line.erase(line.find(i), 1);
 
+			}
+		}
 
+		stringstream text(line);
+		std::string word;
+		//Rebalance tree each line, adding will be more efficient in theory
+		while (text >> word)
+		{
+			auto found_word = wordtree.searchNode(word);
+			if (found_word)
+			{
+				++found_word->frequency;
+				found_word = nullptr;
+			}
+			else
+			{
+				wordtree.insertNode(word);
+			}
 
+		}
 	}
 
+	wordtree.displayInOrder();
 
-
-	// Take each word and add it to the tree
-	// Sort the tree
-
-
-
+	int a = 0;
 
 	return 0;
 
