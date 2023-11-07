@@ -14,8 +14,7 @@ int main()
 
 	std::string filename;
 	std::cout << "Enter a filename and extension to analyze: ";
-	//getline(std::cin, filename);
-	filename = "MobyDick.txt";
+	getline(std::cin, filename);
 
 	std::ifstream book;
 	book.open(filename, std::ios::in);
