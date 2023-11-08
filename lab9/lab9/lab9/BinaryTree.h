@@ -2,6 +2,8 @@
 #define BINARYTREE_H
 #include <iostream>
 #include<cmath>
+#include<vector>
+#include"Word.h"
 using namespace std;
 
 template<typename T>
@@ -11,7 +13,6 @@ struct TreeNode
 	TreeNode<T>* left; // Pointer to left child node
 	TreeNode<T>* right; // Pointer to right child node
 	int height;
-	int frequency;
 };
 
 // BinaryTree template
@@ -28,9 +29,8 @@ private:
 	void destroySubTree(TreeNode<T>*);
 	TreeNode<T>* deleteNode(T, TreeNode<T>*&);
 	void makeDeletion(TreeNode<T>*&);
-	void displayInOrder(TreeNode<T>*) const;
-	void displayPreOrder(TreeNode<T>*) const;
-	void displayPostOrder(TreeNode<T>*) const;
+	void displayOrderAscending(TreeNode<T>*, vector<TreeNode<T>*>&) const;
+	void displayOrderDescending(TreeNode<T>*, vector<TreeNode<T>*>&) const;
 	void updateHeight(TreeNode<T>* );
 	int height(TreeNode<T>*);
 	int balanceFactor(TreeNode<T>*);
@@ -55,11 +55,20 @@ public:
 	// Binary tree operations
 	void insertNode(T);
 	TreeNode<T>* searchNode(T);
-	void remove(T);
+	TreeNode<T>* remove(T);
 
-	void displayInOrder() const { displayInOrder(root); }
-	void displayPreOrder() const { displayPreOrder(root); }
-	void displayPostOrder() const { displayPostOrder(root); }
+	vector<TreeNode<T>*> displayOrderAscending() const 
+	{ 
+		vector<TreeNode<T>*> sorted_list;
+		displayOrderAscending(root, sorted_list);
+		return sorted_list;
+	}
+	vector<TreeNode<T>*> displayOrderDescending() const
+	{
+		vector<TreeNode<T>*> sorted_list;
+		displayOrderDescending(root, sorted_list);
+		return sorted_list;
+	}
 };
 
 //*************************************************************
@@ -101,7 +110,6 @@ void BinaryTree<T>::insertNode(T item)
 	// Create a new node and store num in it.
 	newNode = new TreeNode<T>;
 	newNode->value = item;
-	newNode->frequency = 1;
 	newNode->height = 0;
 	newNode->left = newNode->right = nullptr;
 
@@ -152,7 +160,7 @@ TreeNode<T>* BinaryTree<T>::searchNode(T item)
 // // node whose value member is the same as num. *
 //***********************************************
 template < class T>
-void BinaryTree<T>::remove(T item)
+TreeNode<T>* BinaryTree<T>::remove(T item)
 {
 	deleteNode(item, root);
 }
@@ -221,48 +229,29 @@ void BinaryTree<T>::makeDeletion(TreeNode<T>*& nodePtr)
 	}
 }
 
-//*************************************************************
-// The displayInOrder member function displays the values *
-// in the subtree pointed to by nodePtr, via inorder traversal. *
-//*************************************************************
-template < class T>
-void BinaryTree<T>::displayInOrder(TreeNode<T>* nodePtr) const
-{
-	if (nodePtr)
-	{
-		displayInOrder(nodePtr->left);
-		cout << nodePtr->value << endl;
-		displayInOrder(nodePtr->right);
-	}
-}
-
-//*************************************************************
-// The displayPreOrder member function displays the values *
-// in the subtree pointed to by nodePtr, via preorder traversal. *
-//*************************************************************
-template < class T>
-void BinaryTree<T>::displayPreOrder(TreeNode<T>* nodePtr) const
-{
-	if (nodePtr)
-	{
-		cout << nodePtr->value << endl;
-		displayPreOrder(nodePtr->left);
-		displayPreOrder(nodePtr->right);
-	}
-}
 
 //*************************************************************
 // The displayPostOrder member function displays the values *
 // in the subtree pointed to by nodePtr, via postorder traversal.*
 //*************************************************************
 template < class T>
-void BinaryTree<T>::displayPostOrder(TreeNode<T>* nodePtr) const
+void BinaryTree<T>::displayOrderAscending(TreeNode<T>* nodePtr, vector<TreeNode<T>*>& sorted_list) const
 {
 	if (nodePtr)
 	{
-		displayPostOrder(nodePtr->left);
-		displayPostOrder(nodePtr->right);
-		cout << nodePtr->value << endl;
+		displayOrderAscending(nodePtr->left, sorted_list);
+		displayOrderAscending(nodePtr->right, sorted_list);
+		sorted_list.push_back(nodePtr);
+	}
+}
+template < class T>
+void BinaryTree<T>::displayOrderDescending(TreeNode<T>* nodePtr, vector<TreeNode<T>*>& sorted_list) const
+{
+	if (nodePtr)
+	{
+		displayOrderDescending(nodePtr->right, sorted_list);
+		displayOrderDescending(nodePtr->left, sorted_list);
+		sorted_list.push_back(nodePtr);
 	}
 }
 

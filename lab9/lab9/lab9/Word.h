@@ -29,4 +29,14 @@ struct WordItem
 	}
 };
 
+std::ostream& operator << (std::ostream& out, WordItem& item)
+{
+
+	out << item.word_;
+	out << " - ";
+	out << item.frequency_;
+	return out;
+
+}
+
 #endif // !_WORD_H

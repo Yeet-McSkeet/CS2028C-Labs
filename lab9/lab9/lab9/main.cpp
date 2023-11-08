@@ -10,12 +10,12 @@
 
 int main()
 {
-	BinaryTree<std::string> wordtree;
+	BinaryTree<WordItem> wordtree;
 
 	std::string filename;
 	std::cout << "Enter a filename and extension to analyze: ";
-	//getline(std::cin, filename);
-	filename = "MobyDick.txt";
+	getline(std::cin, filename);
+	//filename = "PeterPan.txt";
 
 	std::ifstream book;
 	book.open(filename, std::ios::in);
@@ -25,7 +25,6 @@ int main()
 	}
 	else { system("CLS"); }
 
-	// Start with one line for now
 
 	std::string line;
 
@@ -34,20 +33,20 @@ int main()
 	{
 		getline(book, line);
 		line.append(" ");	// So that it finds a word
-		for (auto& i : line)
+		for (int i = 0; i < line.length(); ++i)
 		{	// Fix the string to be all lowercase words, all punctuation removed. 
-			if (i == '\0')
+			if (line[i] == '\0')
 			{	// Break if it reaches the newline character
 				break;
 			}
-			if (isupper(i))
+			if (isupper(line[i]))
 			{
-				i += 32;
+				line[i] += 32;
 			}
-			else if (!islower(i) && i != ' ')
+			else if (!islower(line[i]) && line[i] != ' ')
 			{
-				line.erase(line.find(i), 1);
-
+				line.erase(line.find(line[i]), 1);
+				--i;
 			}
 		}
 
@@ -56,21 +55,37 @@ int main()
 		//Rebalance tree each line, adding will be more efficient in theory
 		while (text >> word)
 		{
-			auto found_word = wordtree.searchNode(word);
+			WordItem item{ word,1 };
+			auto found_word = wordtree.searchNode(item);
 			if (found_word)
 			{
-				++found_word->frequency;
+				++found_word->value;
 				found_word = nullptr;
 			}
 			else
 			{
-				wordtree.insertNode(word);
+				wordtree.insertNode(item);
 			}
 
 		}
 	}
+	
+	std::vector<TreeNode<WordItem>*> ascending = wordtree.displayOrderAscending();
+	for (auto& i : ascending)
+	{
+		cout << i->value << endl;;
+	}
 
-	wordtree.displayInOrder();
+	cout << "\n\n\n\n\n";
+
+	std::vector<TreeNode<WordItem>*> descending = wordtree.displayOrderDescending();
+	for (auto& i : descending)
+	{
+		cout << i->value << endl;
+	}
+
+
+	
 
 	int a = 0;
 
