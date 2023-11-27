@@ -2,13 +2,14 @@
 #define BINARYTREE_H
 #include <iostream>
 #include<cmath>
+#include<vector>
+#include"Word.h"
 using namespace std;
 
 template<typename T>
 struct TreeNode
 {
 	T value; // The value in the node
-	int frequency;
 	TreeNode<T>* left; // Pointer to left child node
 	TreeNode<T>* right; // Pointer to right child node
 	int height;
@@ -26,19 +27,20 @@ private:
 	// Private member functions
 	TreeNode<T>* insert(TreeNode<T>*&, TreeNode<T>*&);
 	void destroySubTree(TreeNode<T>*);
-	void deleteNode(T, TreeNode<T>*&);
+	TreeNode<T>* deleteNode(T, TreeNode<T>*&);
 	void makeDeletion(TreeNode<T>*&);
-	void displayInOrder(TreeNode<T>*) const;
-	void displayPreOrder(TreeNode<T>*) const;
-	void displayPostOrder(TreeNode<T>*) const;
+	void displayOrderAscending(TreeNode<T>*, vector<TreeNode<T>*>&) const;
+	void displayOrderDescending(TreeNode<T>*, vector<TreeNode<T>*>&) const;
 	void updateHeight(TreeNode<T>* );
 	int height(TreeNode<T>*);
 	int balanceFactor(TreeNode<T>*);
-	TreeNode<T>* rotateLeft(TreeNode<T>*);
-	TreeNode<T>* rotateRight(TreeNode<T>*);
+	TreeNode<T>* rotateLeft(TreeNode<T>*&);
+	TreeNode<T>* rotateRight(TreeNode<T>*&);
 	TreeNode<T>* rotateRightLeft(TreeNode<T>*);
 	TreeNode<T>* rotateLeftRight(TreeNode<T>*);
 	TreeNode<T>* rebalance(TreeNode<T>*);
+
+	class AlreadyExistsError {};
 
 public:
 	// Constructor
@@ -52,12 +54,21 @@ public:
 
 	// Binary tree operations
 	void insertNode(T);
-	bool searchNode(T);
-	void remove(T);
+	TreeNode<T>* searchNode(T);
+	TreeNode<T>* remove(T);
 
-	void displayInOrder() const { displayInOrder(root); }
-	void displayPreOrder() const { displayPreOrder(root); }
-	void displayPostOrder() const { displayPostOrder(root); }
+	vector<TreeNode<T>*> displayOrderAscending() const 
+	{ 
+		vector<TreeNode<T>*> sorted_list;
+		displayOrderAscending(root, sorted_list);
+		return sorted_list;
+	}
+	vector<TreeNode<T>*> displayOrderDescending() const
+	{
+		vector<TreeNode<T>*> sorted_list;
+		displayOrderDescending(root, sorted_list);
+		return sorted_list;
+	}
 };
 
 //*************************************************************
@@ -72,18 +83,17 @@ TreeNode<T>* BinaryTree<T>::insert(TreeNode<T>*& nodePtr, TreeNode<T>*& newNode)
 	{
 		nodePtr = newNode; // Insert the node
 	}
-	else if (newNode->value == nodePtr->value)
-	{	// Item already exists, frequency updated
-		++nodePtr->frequency;
-		return nullptr;
+	else if (nodePtr->value == newNode->value)
+	{
+		throw AlreadyExistsError();
 	}
 	else if (newNode->value < nodePtr->value)
 	{
-		insert(nodePtr->left, newNode); // Search the left branch
+		nodePtr->left = insert(nodePtr->left, newNode); // Search the left branch
 	}
 	else
 	{
-		insert(nodePtr->right, newNode); // Search the right branch
+		nodePtr->right = insert(nodePtr->right, newNode); // Search the right branch
 	}
 	return rebalance(nodePtr);
 }
@@ -100,6 +110,7 @@ void BinaryTree<T>::insertNode(T item)
 	// Create a new node and store num in it.
 	newNode = new TreeNode<T>;
 	newNode->value = item;
+	newNode->height = 0;
 	newNode->left = newNode->right = nullptr;
 
 	// Insert the node.
@@ -129,19 +140,19 @@ void BinaryTree<T>::destroySubTree(TreeNode<T>* nodePtr)
 // Otherwise, it returns false. *
 //***************************************************
 template < class T>
-bool BinaryTree<T>::searchNode(T item)
+TreeNode<T>* BinaryTree<T>::searchNode(T item)
 {
 	TreeNode<T>* nodePtr = root;
 	while (nodePtr)
 	{
 		if (nodePtr->value == item)
-			return true;
+			return nodePtr;
 		else if (item < nodePtr->value)
 			nodePtr = nodePtr->left;
 		else
 			nodePtr = nodePtr->right;
 	}
-	return false;
+	return nullptr;
 }
 
 //***********************************************
@@ -149,7 +160,7 @@ bool BinaryTree<T>::searchNode(T item)
 // // node whose value member is the same as num. *
 //***********************************************
 template < class T>
-void BinaryTree<T>::remove(T item)
+TreeNode<T>* BinaryTree<T>::remove(T item)
 {
 	deleteNode(item, root);
 }
@@ -159,14 +170,21 @@ void BinaryTree<T>::remove(T item)
 // member is the same as num. *
 //********************************************
 template < class T>
-void BinaryTree<T>::deleteNode(T item, TreeNode<T>*& nodePtr)
+TreeNode<T>* BinaryTree<T>::deleteNode(T item, TreeNode<T>*& nodePtr)
 {
 	if (item < nodePtr->value)
+	{
 		deleteNode(item, nodePtr->left);
+	}
 	else if (item > nodePtr->value)
+	{
 		deleteNode(item, nodePtr->right);
+	}
 	else
+	{
 		makeDeletion(nodePtr);
+	}
+	return rebalance(nodePtr);
 }
 
 //***********************************************************
@@ -211,48 +229,29 @@ void BinaryTree<T>::makeDeletion(TreeNode<T>*& nodePtr)
 	}
 }
 
-//*************************************************************
-// The displayInOrder member function displays the values *
-// in the subtree pointed to by nodePtr, via inorder traversal. *
-//*************************************************************
-template < class T>
-void BinaryTree<T>::displayInOrder(TreeNode<T>* nodePtr) const
-{
-	if (nodePtr)
-	{
-		displayInOrder(nodePtr->left);
-		cout << nodePtr->value << endl;
-		displayInOrder(nodePtr->right);
-	}
-}
-
-//*************************************************************
-// The displayPreOrder member function displays the values *
-// in the subtree pointed to by nodePtr, via preorder traversal. *
-//*************************************************************
-template < class T>
-void BinaryTree<T>::displayPreOrder(TreeNode<T>* nodePtr) const
-{
-	if (nodePtr)
-	{
-		cout << nodePtr->value << endl;
-		displayPreOrder(nodePtr->left);
-		displayPreOrder(nodePtr->right);
-	}
-}
 
 //*************************************************************
 // The displayPostOrder member function displays the values *
 // in the subtree pointed to by nodePtr, via postorder traversal.*
 //*************************************************************
 template < class T>
-void BinaryTree<T>::displayPostOrder(TreeNode<T>* nodePtr) const
+void BinaryTree<T>::displayOrderAscending(TreeNode<T>* nodePtr, vector<TreeNode<T>*>& sorted_list) const
 {
 	if (nodePtr)
 	{
-		displayPostOrder(nodePtr->left);
-		displayPostOrder(nodePtr->right);
-		cout << nodePtr->value << endl;
+		displayOrderAscending(nodePtr->left, sorted_list);
+		displayOrderAscending(nodePtr->right, sorted_list);
+		sorted_list.push_back(nodePtr);
+	}
+}
+template < class T>
+void BinaryTree<T>::displayOrderDescending(TreeNode<T>* nodePtr, vector<TreeNode<T>*>& sorted_list) const
+{
+	if (nodePtr)
+	{
+		displayOrderDescending(nodePtr->right, sorted_list);
+		displayOrderDescending(nodePtr->left, sorted_list);
+		sorted_list.push_back(nodePtr);
 	}
 }
 
@@ -262,12 +261,12 @@ void BinaryTree<T>::displayPostOrder(TreeNode<T>* nodePtr) const
 template<typename T>
 void BinaryTree<T>::updateHeight(TreeNode<T>* node) 
 {
-	node.height = max(height(node.left), height(node.right)) + 1;
+	node->height = max(height(node->left), height(node->right)) + 1;
 }
 
 template<typename T>
 int BinaryTree<T>::height(TreeNode<T>* node) {
-	return node == nullptr ? -1 : node.height;
+	return node == nullptr ? -1 : node->height;
 }
 
 template<typename T>
@@ -275,73 +274,79 @@ int BinaryTree<T>::balanceFactor(TreeNode<T>* node)
 	{ return height(node->right) - height(node->left); }
 
 template <typename T>
-TreeNode<T>* BinaryTree<T>::rotateLeft(TreeNode<T>* node) // right single rotation
+TreeNode<T>* BinaryTree<T>::rotateLeft(TreeNode<T>*& node) // right single rotation
 {
-	TreeNode<T>* nodeLeft = node->right;
-	node->right = nodeLeft->left; // swap inner child
-	nodeLeft->left = node; // bring nodeLeft above node
+	
+	TreeNode<T>* x = node->right;	// new subtree root
+	TreeNode<T>* y = x->left;		// Left branch of new subtree root
+	if (node == root)
+		root = x;
+	x->left = node;					// Set the new subtree root as x
+	node->right = y;				// ??
 	updateHeight(node); // update subtree heights
-	updateHeight(nodeLeft);
-	return nodeLeft;
+	updateHeight(x);
+	return x;
 }
 
 template<class T>
-TreeNode<T>* BinaryTree<T>::rotateRight(TreeNode<T>* node)
+TreeNode<T>* BinaryTree<T>::rotateRight(TreeNode<T>*& node)
 {
-	TreeNode<T>* nodeRight = node->left;
-	node->left = nodeRight->right; // swap inner child
-	nodeRight->right = node; // bring nodeRight above node
+	TreeNode<T>* x = node->left;	// new subtree root
+	TreeNode<T>* y = x->right;		// Left branch of new subtree root
+	if (node == root)
+		root = x;
+	x->right = node;					// Set the new subtree root as x
+	node->left = y;				// ??
 	updateHeight(node); // update subtree heights
-	updateHeight(nodeRight);
-	return nodeRight;
+	updateHeight(x);
+	return x;
 }
 template<typename T>
 TreeNode<T>* BinaryTree<T>::rotateRightLeft(TreeNode<T>* node) // right left double rotation
 {
-	node->right = TreeNode<T>::rotateLeft(node->right);
+	node->right = rotateRight(node->right);
 	return rotateLeft(node);
 }
 
 template<typename T>
 TreeNode<T>* BinaryTree<T>::rotateLeftRight(TreeNode<T>* node) // left-right double rotation
 {
-	node->left = rotateRight(node->left);
+	node->left = rotateLeft(node->left);
 	return rotateRight(node);
 }
 
 template<typename T>
 TreeNode<T>* BinaryTree<T>::rebalance(TreeNode<T>* node)
 {
+	int balance = balanceFactor(node);
 	if (node == nullptr)
 	{
 		return node; // null - nothing to do
-	}
-	if (balanceFactor(node) < 1)  // left heavy?
+	} 
+	if (balance < 0)  // left heavy?
 	{
-
-		if (height(node->left->left) >= height(node->left->right)) // left-left heavy?
-		{
+		if (height(node->left->left) >= height(node->left->right))
+		{	// left-left heavy?
 			node = rotateRight(node); // fix with single rotation
 		}
-		else if (balanceFactor(node) > 1)  // right heavy?
-		{
-			if (height(node->right->right) >= height(node->right->left))
-			{ // right-right heavy?
-				node = rotateLeft(node); // fix with single rotation
-			}
-			else // right-left heavy?
-			{
-				node = rotateRightLeft(node); // fix with double rotation
-			}
-			updateHeight(node); // update node's height
-			return node; // return link to updated subtree
-		}
-
-		else // left-right heavy?
-		{
-			node = rotateLeftRight(node); // fix with double rotation
+		else
+		{	// left-right heavy
+			node = rotateLeftRight(node);
 		}
 	}
+	else if (balance > 0)  // right heavy?
+	{
+		if (height(node->right->right) >= height(node->right->left))
+		{ // right-right heavy?
+			node = rotateLeft(node); // fix with single rotation
+		}
+		else // right-left heavy?
+		{
+			node = rotateRightLeft(node); // fix with double rotation
+		}
+	}
+	updateHeight(node); // update node's height
+	return node; // return link to updated subtree
 }
 
 
