@@ -46,7 +46,7 @@ int main() {
 			catch (Shelf::ShelfEmpty_ e)
 			{
 				system("CLS");
-				std::cout << "Shelf is empty. Cannot take a movie. " << std::endl;
+				std::cout << "Slot is empty. Cannot take a movie. " << std::endl;
 				continue;
 			}
 			catch (Shelf::SlotEmpty_ e)

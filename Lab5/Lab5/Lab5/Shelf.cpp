@@ -41,7 +41,7 @@ void Shelf::shelfDetails_()
 	int slot = 1;
 	for (auto& i : shelf_)
 	{
-		std::cout << "Shelf slot " << slot << " {" << std::endl;
+		std::cout << "\nShelf slot " << slot << "\n{" << std::endl;
 		if (i == nullptr) { std::cout << "<empty>" << std::endl; }
 		else { i->details_(); }
 		std::cout << "}" << std::endl;
